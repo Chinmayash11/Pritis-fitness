@@ -1,0 +1,1843 @@
+/* ----------------------------------------------------
+   NutriFit — Premium Design System & Stylesheet
+   ---------------------------------------------------- */
+
+/* --- CSS Variables & Design Tokens --- */
+:root {
+    /* Fonts */
+    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Transition Speeds */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Shadows & Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+    --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --shadow-soft: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+
+    /* HSL Colors: Default Dark Mode */
+    --bg-base: hsl(230, 25%, 8%);
+    --bg-surface: hsl(228, 20%, 12%);
+    --bg-glass: rgba(22, 28, 45, 0.65);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    
+    --color-primary: hsl(263, 85%, 65%); /* Violet Spark */
+    --color-primary-hover: hsl(263, 85%, 72%);
+    --color-accent: hsl(142, 76%, 45%); /* Active Spring Green */
+    --color-accent-hover: hsl(142, 76%, 52%);
+    
+    --text-primary: hsl(0, 0%, 96%);
+    --text-secondary: hsl(228, 12%, 70%);
+    --text-muted: hsl(228, 8%, 50%);
+
+    /* Health Range Colors */
+    --color-underweight: hsl(45, 95%, 50%); /* Amber Gold */
+    --color-normal: hsl(142, 76%, 45%);      /* Healthy Green */
+    --color-overweight: hsl(28, 95%, 55%);   /* Warm Orange */
+    --color-obese: hsl(4, 85%, 58%);         /* Alert Red */
+    
+    --glow-opacity: 0.15;
+}
+
+/* --- Light Mode Color Overrides --- */
+[data-theme="light"] {
+    --bg-base: hsl(220, 20%, 96%);
+    --bg-surface: hsl(0, 0%, 100%);
+    --bg-glass: rgba(255, 255, 255, 0.75);
+    --border-glass: rgba(0, 0, 0, 0.06);
+
+    --color-primary: hsl(263, 75%, 55%);
+    --color-primary-hover: hsl(263, 75%, 45%);
+    --color-accent: hsl(142, 70%, 40%);
+    --color-accent-hover: hsl(142, 70%, 32%);
+
+    --text-primary: hsl(224, 25%, 12%);
+    --text-secondary: hsl(224, 12%, 40%);
+    --text-muted: hsl(224, 8%, 60%);
+
+    --shadow-premium: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+    --glow-opacity: 0.06;
+}
+
+/* --- Reset & Core Layout Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* --- Ambient Background Glow Elements --- */
+.bg-glow {
+    position: absolute;
+    border-radius: var(--radius-full);
+    filter: blur(140px);
+    z-index: -1;
+    opacity: var(--glow-opacity);
+    transition: opacity var(--transition-normal), transform var(--transition-slow);
+    pointer-events: none;
+}
+
+.bg-glow-1 {
+    top: -10%;
+    left: 20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+    animation: floatGlow 18s infinite alternate ease-in-out;
+}
+
+.bg-glow-2 {
+    top: 40%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+    animation: floatGlow 24s infinite alternate-reverse ease-in-out;
+}
+
+.bg-glow-3 {
+    bottom: -10%;
+    left: 10%;
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+}
+
+@keyframes floatGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(80px, 40px) scale(1.1); }
+}
+
+/* --- Premium Typography Utilities --- */
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-glass);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--bg-base);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* --- Navbar Glassmorphic Design --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 76px;
+    z-index: 1000;
+    background: var(--bg-glass);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-glass);
+    transition: background-color var(--transition-normal), border var(--transition-normal);
+}
+
+.navbar-container {
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.03em;
+}
+
+.brand-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.brand span span {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    background-color: var(--border-glass);
+}
+
+.nav-link.active {
+    color: var(--text-primary);
+    background-color: rgba(139, 92, 246, 0.12);
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background-color: var(--border-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    color: var(--text-primary);
+    transform: scale(1.08);
+    background-color: var(--border-glass);
+}
+
+/* --- Global UI Buttons --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-secondary {
+    background-color: var(--border-glass);
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: var(--radius-md);
+}
+
+.btn-md {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+}
+
+/* --- Hero Section Styles --- */
+.hero-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 140px 24px 60px 24px;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-text .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background-color: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    font-family: var(--font-heading);
+}
+
+.hero-text h1 {
+    font-size: 54px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-text p {
+    font-size: 18px;
+    max-width: 540px;
+    margin-bottom: 36px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+}
+
+/* Hero Visual Art and Floating Cards */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-image-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-circle-backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(16, 185, 129, 0.2));
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    animation: rotateBackdrop 25s infinite linear;
+}
+
+@keyframes rotateBackdrop {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+}
+
+.center-icon {
+    font-size: 80px;
+    color: var(--color-primary);
+    filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.4));
+    animation: bounceCenter 4s infinite ease-in-out;
+}
+
+@keyframes bounceCenter {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* Floating Glass Cards */
+.floating-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-premium);
+    z-index: 10;
+    animation: bounceCard 6s infinite ease-in-out;
+}
+
+.floating-card.glass {
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+}
+
+.card-bmi {
+    top: -20px;
+    left: -40px;
+    animation-delay: 0s;
+}
+
+.card-calories {
+    bottom: -20px;
+    right: -20px;
+    animation-delay: 3s;
+}
+
+.floating-card .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.card-bmi .card-icon {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: var(--color-accent);
+}
+
+.card-calories .card-icon {
+    background-color: rgba(239, 68, 68, 0.12);
+    color: var(--color-obese);
+}
+
+.floating-card .card-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.floating-card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.floating-card .value {
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-indicator {
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+}
+
+.status-normal { background-color: rgba(16, 185, 129, 0.15); color: var(--color-accent); }
+.status-under { background-color: rgba(245, 158, 11, 0.15); color: var(--color-underweight); }
+.status-over { background-color: rgba(249, 115, 22, 0.15); color: var(--color-overweight); }
+.status-obese { background-color: rgba(239, 68, 68, 0.15); color: var(--color-obese); }
+
+@keyframes bounceCard {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* --- Section Formatting & Glass Containers --- */
+.section-padding {
+    padding: 100px 24px;
+}
+
+.section-header {
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-size: 38px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-header p {
+    font-size: 16px;
+}
+
+/* Dynamic Panel Container Base */
+.glass-panel {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-premium);
+    padding: 36px;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.glass-panel:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .glass-panel:hover {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* --- Health Profiler Grid & Elements --- */
+.calculator-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 32px;
+}
+
+/* Progress Step Bar */
+.steps-progress-bar {
+    position: relative;
+    height: 4px;
+    background-color: var(--border-glass);
+    margin-bottom: 40px;
+    border-radius: var(--radius-full);
+}
+
+.step-progress-fill {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--radius-full);
+    transition: width var(--transition-normal) ease;
+}
+
+.step-indicators {
+    position: absolute;
+    width: 100%;
+    top: -12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    background-color: var(--bg-surface);
+    border: 2px solid var(--border-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: border var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.step-dot.active {
+    border-color: var(--color-primary);
+    color: #fff;
+    background-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.step-dot.completed {
+    border-color: var(--color-accent);
+    color: #fff;
+    background-color: var(--color-accent);
+}
+
+/* Multi-Step Transitions */
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+    animation: slideInStep var(--transition-normal) ease;
+}
+
+@keyframes slideInStep {
+    from { opacity: 0; transform: translateX(12px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.form-step h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.form-step h3 i {
+    color: var(--color-primary);
+}
+
+.step-subtitle {
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+/* Form Input Groups */
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 16px;
+    color: var(--text-muted);
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-with-icon input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px 0 46px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+[data-theme="light"] .input-with-icon input {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.input-with-icon input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.field-suffix {
+    position: absolute;
+    right: 16px;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.input-tip {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+/* Gender Selector Cards */
+.gender-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.gender-card {
+    cursor: pointer;
+}
+
+.gender-card input {
+    display: none;
+}
+
+.gender-content {
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-secondary);
+    transition: border var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+}
+
+[data-theme="light"] .gender-content {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+.gender-content i {
+    font-size: 20px;
+}
+
+.gender-card input:checked + .gender-content {
+    border-color: var(--color-primary);
+    background-color: rgba(139, 92, 246, 0.08);
+    color: var(--text-primary);
+}
+
+/* Unit Selector Container */
+.unit-toggle-container {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 24px;
+}
+
+[data-theme="light"] .unit-toggle-container {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.btn-unit-toggle {
+    flex: 1;
+    border: none;
+    background: none;
+    height: 38px;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-unit-toggle.active {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Sliders Layout */
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.slider-val {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.slider-wrapper input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    background: var(--border-glass);
+    height: 6px;
+    border-radius: var(--radius-full);
+    outline: none;
+}
+
+.slider-wrapper input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.slider-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+/* Height Imperial Fields Grid */
+.height-imperial-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Lifestyle/Goal Selector Grid */
+.custom-select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.custom-select-wrapper select {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    appearance: none;
+    cursor: pointer;
+    transition: border var(--transition-fast);
+}
+
+[data-theme="light"] .custom-select-wrapper select {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.custom-select-wrapper select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.custom-select-wrapper::after {
+    content: '\f107';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 18px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+/* Goal selector Cards */
+.goal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.goal-card {
+    cursor: pointer;
+}
+
+.goal-card input {
+    display: none;
+}
+
+.goal-content {
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    transition: border var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+}
+
+[data-theme="light"] .goal-content {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+.goal-content i {
+    font-size: 20px;
+    color: var(--text-muted);
+}
+
+.goal-content span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.goal-content .goal-desc {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.goal-card input:checked + .goal-content {
+    border-color: var(--color-primary);
+    background-color: rgba(139, 92, 246, 0.08);
+}
+
+.goal-card input:checked + .goal-content i {
+    color: var(--color-primary);
+}
+
+.goal-card input:checked + .goal-content span {
+    color: var(--text-primary);
+}
+
+/* Actions in Step Form */
+.step-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+    border-top: 1px solid var(--border-glass);
+    padding-top: 24px;
+}
+
+.step-actions .btn {
+    padding: 12px 24px;
+}
+
+/* Info Panel Right Hand Layout */
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-panel h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.info-panel p {
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+.bmi-scale-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+}
+
+.scale-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+}
+
+[data-theme="light"] .scale-item {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.scale-item .bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    margin-right: 16px;
+}
+
+.item-under .bullet { background-color: var(--color-underweight); }
+.item-normal .bullet { background-color: var(--color-normal); }
+.item-over .bullet { background-color: var(--color-overweight); }
+.item-obese .bullet { background-color: var(--color-obese); }
+
+.scale-item .range {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    width: 100px;
+}
+
+.scale-item .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.formula-box {
+    padding: 14px 18px;
+    background-color: rgba(139, 92, 246, 0.06);
+    border: 1px dashed rgba(139, 92, 246, 0.25);
+    border-radius: var(--radius-sm);
+}
+
+.formula-title {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.formula-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* --- Results / Dashboard Grid --- */
+.results-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+/* Speedometer SVG Gauge Design */
+.bmi-gauge-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bmi-gauge-card h3 {
+    margin-bottom: 24px;
+    align-self: flex-start;
+}
+
+.gauge-container {
+    position: relative;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gauge-svg {
+    width: 100%;
+}
+
+.gauge-bg {
+    stroke: var(--border-glass);
+}
+
+.gauge-fill {
+    stroke: var(--color-accent);
+    stroke-dasharray: 251.2; /* Pi * r = 3.14 * 80 */
+    stroke-dashoffset: 251.2;
+    transition: stroke-dashoffset 1s ease-out, stroke var(--transition-fast);
+}
+
+.gauge-needle {
+    stroke: var(--color-primary);
+    transform-origin: 100px 110px;
+    transform: rotate(0deg); /* 0 degrees is horizontal left, 180 is horizontal right */
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.needle-cap {
+    fill: var(--color-primary);
+}
+
+.gauge-stats {
+    position: absolute;
+    bottom: -6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gauge-number {
+    font-family: var(--font-heading);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.gauge-badge {
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.bmi-assessment-box {
+    margin-top: 24px;
+    width: 100%;
+    padding: 16px 20px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-size: 14px;
+}
+
+[data-theme="light"] .bmi-assessment-box {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* Energy Balance Panels */
+.energy-card h3 {
+    margin-bottom: 28px;
+}
+
+.energy-stats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.energy-stat-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 24px;
+    border-radius: var(--radius-md);
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+}
+
+[data-theme="light"] .energy-stat-box {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+.energy-stat-box.highlight {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(16, 185, 129, 0.06) 100%);
+    border-color: rgba(139, 92, 246, 0.25);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.06);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.bmr-icon { background-color: rgba(99, 102, 241, 0.12); color: hsl(237, 75%, 65%); }
+.tdee-icon { background-color: rgba(245, 158, 11, 0.12); color: var(--color-underweight); }
+.goal-icon { background-color: rgba(16, 185, 129, 0.12); color: var(--color-accent); }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-info .label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.stat-info .value {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 2px 0;
+}
+
+.stat-info .desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* --- Dynamic Diet & Macro Ratios --- */
+.diet-filters-container {
+    max-width: 1200px;
+    margin: 0 auto 36px auto;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.diet-filter-btn {
+    border: 1px solid var(--border-glass);
+    background-color: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 24px;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow-soft);
+    transition: border var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.diet-filter-btn:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.diet-filter-btn.active {
+    background-color: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+}
+
+/* Diet Grid Layout */
+.diet-planner-grid {
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    display: grid;
+    grid-template-columns: 0.75fr 1.25fr;
+    gap: 32px;
+}
+
+/* Donut Radial Macro Chart Panel */
+.macro-chart-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.macro-chart-panel h3 {
+    align-self: flex-start;
+    margin-bottom: 32px;
+}
+
+.macro-donut-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.macro-donut-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.track-bg {
+    stroke: var(--border-glass);
+}
+
+.track-fill {
+    transform-origin: 80px 80px;
+    transition: stroke-dashoffset 0.8s ease-out;
+}
+
+.fill-carbs { stroke: hsl(200, 85%, 55%); }   /* Ice Blue */
+.fill-protein { stroke: var(--color-accent); } /* Emerald Green */
+.fill-fats { stroke: hsl(36, 95%, 55%); }      /* Orange */
+
+.macro-donut-content {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.calories-target-num {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.calories-target-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+/* Macro Legend */
+.macro-legend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 36px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+}
+
+[data-theme="light"] .legend-item {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.legend-item .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-full);
+}
+
+.dot-carbs { background-color: hsl(200, 85%, 55%); }
+.dot-protein { background-color: var(--color-accent); }
+.dot-fats { background-color: hsl(36, 95%, 55%); }
+
+.legend-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.legend-details .label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.legend-details .value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Meals Planner Layout Right side */
+.meals-header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.meals-header h3 {
+    font-size: 24px;
+}
+
+.day-selector {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.day-btn {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border-glass);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.day-btn:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.day-btn.active {
+    background-color: var(--border-glass);
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+}
+
+/* Meals List & Individual Cards */
+.meals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.meal-card {
+    display: grid;
+    grid-template-columns: 80px 1fr 140px;
+    gap: 20px;
+    align-items: center;
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+[data-theme="light"] .meal-card {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.meal-card:hover {
+    transform: translateX(4px);
+    border-color: rgba(139, 92, 246, 0.3);
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="light"] .meal-card:hover {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+.meal-type-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    border-radius: var(--radius-sm);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    color: var(--color-primary);
+}
+
+.meal-type-tag i {
+    font-size: 20px;
+}
+
+.meal-type-tag span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.meal-info h4 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.meal-ingredients {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.meal-macros {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.meal-calories-badge {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.meal-macros-details {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.btn-swap-meal {
+    background: none;
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-swap-meal:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: rgba(139, 92, 246, 0.08);
+}
+
+.btn-swap-meal i {
+    transition: transform var(--transition-fast);
+}
+
+.btn-swap-meal:hover i {
+    transform: rotate(180deg);
+}
+
+/* --- Grocery checklist panel --- */
+.groceries-section-panel {
+    margin-top: 40px;
+}
+
+.groceries-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-glass);
+    margin-bottom: 28px;
+}
+
+.groceries-title-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.groceries-title-area i {
+    font-size: 32px;
+    color: var(--color-accent);
+}
+
+.groceries-title-area h3 {
+    font-size: 22px;
+}
+
+.groceries-title-area p {
+    font-size: 13px;
+}
+
+.groceries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.grocery-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border var(--transition-fast), background-color var(--transition-fast);
+}
+
+[data-theme="light"] .grocery-checkbox-label {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+.grocery-checkbox-label:hover {
+    border-color: var(--color-accent);
+    background-color: rgba(16, 185, 129, 0.04);
+}
+
+.grocery-checkbox-label input {
+    display: none;
+}
+
+.grocery-custom-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--border-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.grocery-custom-check i {
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.grocery-checkbox-label input:checked + .grocery-custom-check {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.grocery-checkbox-label input:checked + .grocery-custom-check i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.grocery-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast), text-decoration var(--transition-fast);
+}
+
+.grocery-checkbox-label input:checked ~ .grocery-name {
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+/* --- Footer Area --- */
+.main-footer {
+    border-top: 1px solid var(--border-glass);
+    background-color: var(--bg-surface);
+    padding: 60px 24px;
+    margin-top: 80px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 40px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.brand-logo i {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+}
+
+.brand-logo span span {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-brand p {
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer-links h4 {
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.footer-links ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.footer-links a {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--color-primary);
+}
+
+.footer-disclaimer {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-glass);
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-disclaimer p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.copyright {
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* --- Dynamic Utility Classes --- */
+.hidden {
+    display: none !important;
+}
+
+/* --- Animated Keyframes --- */
+.animate-fade-in {
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+    animation: slideIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Responsive Adaptability (Media Queries) --- */
+
+@media (max-width: 992px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        padding-top: 110px;
+        gap: 40px;
+        text-align: center;
+    }
+    .hero-text h1 {
+        font-size: 40px;
+    }
+    .hero-text p {
+        margin: 0 auto 30px auto;
+    }
+    .hero-actions {
+        justify-content: center;
+    }
+    .hero-visual {
+        margin-top: 20px;
+    }
+    .card-bmi {
+        left: 0;
+    }
+    .card-calories {
+        right: 0;
+    }
+    .calculator-grid,
+    .results-grid,
+    .diet-planner-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .info-panel {
+        order: -1;
+    }
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar-container {
+        padding: 0 16px;
+    }
+    .nav-menu {
+        display: none; /* Hide standard nav list on small mobile */
+    }
+    .hero-text h1 {
+        font-size: 32px;
+    }
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    .hero-actions .btn {
+        width: 100%;
+    }
+    .floating-card {
+        display: none; /* Simplify mobile graphics */
+    }
+    .section-padding {
+        padding: 60px 16px;
+    }
+    .glass-panel {
+        padding: 24px 16px;
+    }
+    .gender-selector {
+        grid-template-columns: 1fr;
+    }
+    .goal-grid {
+        grid-template-columns: 1fr;
+    }
+    .meal-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 16px;
+    }
+    .meal-type-tag {
+        height: 50px;
+        flex-direction: row;
+        gap: 8px;
+    }
+    .meal-type-tag span {
+        margin-top: 0;
+    }
+    .meal-macros {
+        align-items: center;
+    }
+    .groceries-header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+}
